@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var URLSchema = new Schema({
+    token: String,
     url: String,
     paid: Boolean
 });
