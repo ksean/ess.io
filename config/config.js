@@ -1,49 +1,54 @@
-var path = require('path'),
-    rootPath = path.normalize(__dirname + '/..'),
-    env = process.env.NODE_ENV || 'development';
+// Core module
+var path = require('path');
 
-var SITE_NAME = 'ESS.IO - minimal url shortener';
+// Get root path
+var rootPath = path.normalize(__dirname + '/..');
+
+// Get environment or default to DEVELOPMENT
+var environment = process.env.APP_ENVIRONMENT || 'DEVELOPMENT';
+
+// Site constants
 var SITE_PORT = 80;
 var PACKAGE_NAME = 'essio';
-
 var DB_URL = 'mongodb://localhost/';
 
+// Environment specific configuration
 var config = {
-    development: {
+    DEVELOPMENT: {
         root: rootPath,
         app: {
             name: PACKAGE_NAME
         },
         port: SITE_PORT,
-        db: DB_URL + 'essio-development'
+        db: DB_URL + 'development'
     },
 
-    test: {
+    TESTING: {
         root: rootPath,
         app: {
             name: PACKAGE_NAME
         },
         port: SITE_PORT,
-        db: DB_URL + 'essio-test'
+        db: DB_URL + 'test'
     },
 
-    staging: {
+    STAGING: {
         root: rootPath,
         app: {
             name: PACKAGE_NAME
         },
         port: SITE_PORT,
-        db: DB_URL + 'essio-staging'
+        db: DB_URL + 'staging'
     },
 
-    production: {
+    PRODUCTION: {
         root: rootPath,
         app: {
             name: PACKAGE_NAME
         },
         port: SITE_PORT,
-        db: DB_URL + 'essio-production'
+        db: DB_URL + 'production'
     }
 };
 
-module.exports = config[env];
+module.exports = config[environment];

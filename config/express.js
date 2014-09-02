@@ -22,34 +22,34 @@ module.exports = function(app, config) {
 
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {
-    if (/\.js$/.test(file)) {
-        require(controllersPath + '/' + file)(app);
-    }
+        if (/\.js$/.test(file)) {
+            require(controllersPath + '/' + file)(app);
+        }
     });
 
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
+    app.use(function (request, response, next) {
+        var error = new Error('Not Found');
+        error.status = 404;
+        next(error);
     });
 
     if(app.get('env') === 'development'){
-        app.use(function (err, req, res) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: err,
-                title: 'error'
+        app.use(function (error, request, response) {
+            response.status(error.status || 500);
+            response.render('error', {
+                message: error.message,
+                error: error,
+                title: config.SITE_NAME
             });
         });
     }
 
-    app.use(function (err, req, res) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
+    app.use(function (error, request, response) {
+        response.status(error.status || 500);
+        response.render('error', {
+            message: error.message,
             error: {},
-            title: 'error'
+            title: config.SITE_NAME
         });
     });
 };

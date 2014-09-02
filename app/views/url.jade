@@ -1,6 +1,9 @@
 extends layout
 
+include ./ad.jade
+
 block content
-    p.
-        this: #{url}
-    button(style="display:block; margin:0 auto;", href=url) Continue
+    if url
+        a(href=url) Continue
+    else
+        p Nothing here
