@@ -1,9 +1,8 @@
 extends layout
 
-include ./ad.jade
-
 block content
+    include ad.jade
     if url
-        a(href=url) Continue
+        a(style="display:block; text-align:center; margin:0 auto;", href=url) Continue
     else
-        p Nothing here
+        p(style="display:block; text-align:center; margin:0 auto;") Nothing here

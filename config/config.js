@@ -11,44 +11,32 @@ var environment = process.env.APP_ENVIRONMENT || 'DEVELOPMENT';
 var SITE_PORT = 80;
 var PACKAGE_NAME = 'essio';
 var DB_URL = 'mongodb://localhost/';
+var VALID_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
+var VALID_URL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=';
 
 // Environment specific configuration
 var config = {
-    DEVELOPMENT: {
-        root: rootPath,
-        app: {
-            name: PACKAGE_NAME
-        },
-        port: SITE_PORT,
-        db: DB_URL + 'development'
+    'DEVELOPMENT': {
+        'db': DB_URL + 'development'
     },
-
-    TESTING: {
-        root: rootPath,
-        app: {
-            name: PACKAGE_NAME
-        },
-        port: SITE_PORT,
-        db: DB_URL + 'test'
+    'TESTING': {
+        'db': DB_URL + 'test'
     },
-
-    STAGING: {
-        root: rootPath,
-        app: {
-            name: PACKAGE_NAME
-        },
-        port: SITE_PORT,
-        db: DB_URL + 'staging'
+    'STAGING': {
+        'db': DB_URL + 'staging'
     },
-
-    PRODUCTION: {
-        root: rootPath,
-        app: {
-            name: PACKAGE_NAME
-        },
-        port: SITE_PORT,
-        db: DB_URL + 'production'
+    'PRODUCTION': {
+        'db': DB_URL + 'production'
     }
 };
 
-module.exports = config[environment];
+// Export config
+module.exports = {
+    'root': rootPath,
+    'app': {
+        'name': PACKAGE_NAME
+    },
+    'port': SITE_PORT,
+    'db': config[environment]['db'],
+    'valid': VALID_CHARS
+};

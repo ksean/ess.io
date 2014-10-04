@@ -42,4 +42,3 @@ require('./config/express')(app, config);
 
 // HTTP server listen
 app.listen(config.port);
-

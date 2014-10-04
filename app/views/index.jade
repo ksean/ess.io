@@ -7,3 +7,5 @@ block content
         form(action='/new', method='post')
             input(style="display:block; text-align:center; margin:0 auto;", type="text", placeholder="url", name="url")
             input(type="submit",style="display:block; margin:0 auto;",value="Shorten")
+        if url
+            a(style="display:block; text-align:center; margin:0 auto;") #{url} is not a valid url

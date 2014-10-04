@@ -1,25 +1,30 @@
-var express = require('express');
+// Core modules
 var fs = require('fs');
 var path = require('path');
 
-var logger = require('morgan');
+// Express modules
+var express = require('express');
 var bodyParser = require('body-parser');
 var compress = require('compression');
-var methodOverride = require('method-override');
 
 module.exports = function(app, config) {
+    // Use jade templates
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'jade');
 
-    app.use(logger('dev'));
+    // Enable json/urlencoded body parsing
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true
     }));
-    app.use(compress());
-    app.use(express.static(config.root + '/public'));
-    app.use(methodOverride());
 
+    // Use compression for all requests
+    app.use(compress());
+
+    // Use public folder for static content
+    app.use(express.static(config.root + '/public'));
+
+    // Try to match incoming request to controller
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {
         if (/\.js$/.test(file)) {
@@ -27,28 +32,19 @@ module.exports = function(app, config) {
         }
     });
 
+    // If no controller route found
     app.use(function (request, response, next) {
         var error = new Error('Not Found');
         error.status = 404;
         next(error);
     });
 
-    if(app.get('env') === 'development'){
-        app.use(function (error, request, response) {
-            response.status(error.status || 500);
-            response.render('error', {
-                message: error.message,
-                error: error,
-                title: config.SITE_NAME
-            });
-        });
-    }
-
+    // Display errors in development
     app.use(function (error, request, response) {
         response.status(error.status || 500);
         response.render('error', {
             message: error.message,
-            error: {},
+            error: (app.get('env') === 'DEVELOPMENT' ? error : {}),
             title: config.SITE_NAME
         });
     });
