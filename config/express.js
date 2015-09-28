@@ -28,15 +28,13 @@ module.exports = function(app, config) {
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {
         if (/\.js$/.test(file)) {
-            require(controllersPath + '/' + file)(app);
+            require(controllersPath + '/' + file)(app, config);
         }
     });
 
-    // If no controller route found
-    app.use(function (request, response, next) {
-        var error = new Error('Not Found');
-        error.status = 404;
-        next(error);
+    // If no controller route found, default to index
+    app.use(function (request, response) {
+        response.render('index');
     });
 
     // Display errors in development

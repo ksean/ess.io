@@ -9,8 +9,9 @@ var environment = process.env.APP_ENVIRONMENT || 'DEVELOPMENT';
 
 // Site constants
 var SITE_PORT = 80;
-var PACKAGE_NAME = 'essio';
+var SITE_URL = "ess.io";
 var DB_URL = 'mongodb://localhost/';
+var PACKAGE_NAME = 'essio';
 var VALID_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
 var VALID_URL_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=';
 
@@ -36,6 +37,7 @@ module.exports = {
     'app': {
         'name': PACKAGE_NAME
     },
+    'url': SITE_URL,
     'port': SITE_PORT,
     'db': config[environment]['db'],
     'valid': VALID_CHARS
