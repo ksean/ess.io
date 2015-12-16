@@ -1,10 +1,3 @@
-// Core modules
-var http = require('http');
-
-// App modules
-var express = require('express');
-var router = express.Router();
-
 // Mongoose
 var mongoose = require('mongoose');
 var URL = mongoose.model('URL');
@@ -22,26 +15,26 @@ module.exports = function(app, config) {
 
             if (!tools.validUrl(protocolUrl)) {
                 response.render('index', {'url': protocolUrl});
-            }
-
-            URL.findOne({url: protocolUrl}, function(error, url) {
-                if (error) {
-                    console.log(error);
-                }
-                if (url !== null) {
-                    response.render('done', {'url': config.url + "/" + url.token});
-                }
-            });
-
-            tools.generateToken(function(token) {
-                var shortUrl = new URL({token: token, url: protocolUrl, paid: false});
-                shortUrl.save(function(error) {
-                    if (error) {
-                        next(error);
-                    }
-                    response.render('done', {'url': config.url + "/" + token});
-                });
-            });
+            } else {
+				URL.findOne({url: protocolUrl}, function(error, url) {
+					if (error) {
+						console.log(error);
+					}
+					if (url !== null) {
+						response.render('done', {'url': config.url + "/" + url.token});
+					} else {
+						tools.generateToken(function(token) {
+							var shortUrl = new URL({token: token, url: protocolUrl, paid: false});
+							shortUrl.save(function(error) {
+								if (error) {
+									next(error);
+								}
+								response.render('done', {'url': config.url + "/" + token});
+							});
+						});
+					}
+				});
+			}
         }
     });
 };
